@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "431463033650",
+    "project_id": "fistbump-a4a0c",
+    "storage_bucket": "fistbump-a4a0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431463033650:android:d5be50d90d35ac28f5452b",
+        "android_client_info": {
+          "package_name": "com.example.fistbump"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431463033650-84bk5krooscjjuc976d0ommscso3h4ue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzSWnQ0mNYFgwI2LRYCQm_7wT0TbQ-njs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431463033650-84bk5krooscjjuc976d0ommscso3h4ue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
