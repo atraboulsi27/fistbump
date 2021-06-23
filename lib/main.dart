@@ -1,17 +1,7 @@
 import 'package:fistbump/config/themes/dark_theme.dart';
-import 'package:fistbump/screens/login_page.dart';
-
-/// Flutter code sample for BottomNavigationBar
-
-// This example shows a [BottomNavigationBar] as it is used within a [Scaffold]
-// widget. The [BottomNavigationBar] has three [BottomNavigationBarItem]
-// widgets, which means it defaults to [BottomNavigationBarType.fixed], and
-// the [currentIndex] is set to index 0. The selected item is
-// amber. The `_onItemTapped` function changes the selected item's index
-// and displays a corresponding message in the center of the [Scaffold].
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'screens/home.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +24,7 @@ class MyApp extends StatelessWidget {
             return Container();
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            return LoginPage();
+            return Home();
           }
           return CircularProgressIndicator();
         },
