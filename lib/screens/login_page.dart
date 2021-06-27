@@ -47,18 +47,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _submitButton() {
     return InkWell(
-      onTap: () async{
+      onTap: () async {
         auth.signIn(emailController.text.trim(), passController.text.trim());
-        var user = await repo.getProfile(emailController.text.trim());
-        if(user.docs[0]["professional"]==false)
-          {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => HomePage()));
-          }
-        if(user.docs[0]["professional"]==true)
-        {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ProfessionalPage()));
+        var profile = await repo.getProfile(emailController.text.trim());
+        if (profile.docs[0]["professional"] == false) {
+          user_name = profile.docs[0]["name"];
+          user_email = profile.docs[0]["email"];
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => HomePage()));
+        }
+        if (profile.docs[0]["professional"] == true) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ProfessionalPage()));
         }
       },
       child: Container(

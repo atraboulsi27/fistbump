@@ -82,24 +82,30 @@ class ProfileRepository {
     });
   }
 
-  getProfile(String email) async{
+  getProfile(String email) async {
     return _firestore
         .collection('users')
         .where("email", isEqualTo: email)
         .get();
-
   }
 
-  Future<void> insertUser(String email) {
+  Future<void> insertUser(String email, String user) {
     return _firestore
         .collection('users')
-        .add({'email': email, 'professional': false});
+        .add({'email': email, 'professional': false,'name':user});
   }
 
-  void update(String id, DateTime appointment) {
+  void update(String id, List appointment) {
     try {
+      Map appt(){
+        return {
+          "name" : appointment[0],
+          "time" : appointment[1],
+          "user_email": appointment[2]
+        };
+      }
       _firestore.collection('profiles').doc(id).update({
-        "appointments": FieldValue.arrayUnion([appointment])
+        "pending_appointments": FieldValue.arrayUnion([appt()])
       });
     } catch (e) {
       print(e);
@@ -121,7 +127,7 @@ class Authentication {
 //    }
 //  }
 
-  dynamic register(email, name, pass) async {
+  dynamic register(email, pass) async {
     try {
       UserCredential user = await auth.createUserWithEmailAndPassword(
           email: email, password: pass);
@@ -157,3 +163,7 @@ class Authentication {
     await auth.signOut();
   }
 }
+
+String user_name = "";
+String user_email = "";
+

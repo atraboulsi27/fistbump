@@ -61,7 +61,8 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               child: ElevatedButton(
                 child: Text("Book time slot"),
                 onPressed: () {
-                  repository.update(widget.profile.id!, currentSelection.date!);
+                  List appointment = [user_name,currentSelection.date!,user_email];
+                  repository.update(widget.profile.id!, appointment );
                   Navigator.of(context).pop();
                 },
               )),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 import 'package:fistbump/repository/profile_repository.dart';
+import 'home_page.dart';
+
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -46,12 +48,18 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _submitButton() {
     return InkWell(
       onTap: () {
-        auth.register(emailController.text.trim(), nameController.text.trim(),
-            passController.text.trim());
-        repo.insertUser(emailController.text.trim());
+        auth.register(emailController.text.trim(), passController.text.trim());
+        repo.insertUser(emailController.text.trim(), nameController.text.trim());
+        user_name = nameController.text.trim();
+        user_email = emailController.text.trim();
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => HomePage()));
       },
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         padding: EdgeInsets.symmetric(vertical: 15),
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -125,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Username", nameController),
+        _entryField("Name", nameController),
         _entryField("Email id", emailController),
         _entryField("Password", passController, isPassword: true),
       ],
@@ -134,15 +142,24 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Scaffold(
       body: Container(
         height: height,
         child: Stack(
           children: <Widget>[
             Positioned(
-              top: -MediaQuery.of(context).size.height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
+              top: -MediaQuery
+                  .of(context)
+                  .size
+                  .height * .15,
+              right: -MediaQuery
+                  .of(context)
+                  .size
+                  .width * .4,
               child: Container(
                 height: 100,
                 width: 100,
