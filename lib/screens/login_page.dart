@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'signup_page.dart';
 import 'package:fistbump/repository/profile_repository.dart';
 import 'home_page.dart';
-
+import 'ProfessionalMenu.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -55,6 +55,11 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => HomePage()));
           }
+        if(user.docs[0]["professional"]==true)
+        {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ProfessionalPage()));
+        }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
