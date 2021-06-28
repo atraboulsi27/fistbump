@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'signup_page.dart';
 import 'package:fistbump/repository/profile_repository.dart';
-import 'home_page.dart';
+import 'home.dart';
 import 'ProfessionalMenu.dart';
 
 class LoginPage extends StatefulWidget {
@@ -53,8 +53,11 @@ class _LoginPageState extends State<LoginPage> {
         if (profile.docs[0]["professional"] == false) {
           user_name = profile.docs[0]["name"];
           user_email = profile.docs[0]["email"];
+          pending_appts = profile.docs[0]["pending_appointments"];
+          accepted_appts = profile.docs[0]["appointments"];
+          print(pending_appts);
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => HomePage()));
+              .push(MaterialPageRoute(builder: (context) => Home()));
         }
         if (profile.docs[0]["professional"] == true) {
           Navigator.of(context).push(
