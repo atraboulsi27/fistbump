@@ -17,10 +17,13 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
     expertise: json['expertise'] as String?,
     phone: json['phone'] as String?,
     appointments: (json['appointments'] as List<dynamic>?)
-        ?.map((e) => DateTime.parse(e as String))
+        ?.map(
+            (e) => ProfessionalAppointment.fromJson(e as Map<String, dynamic>))
         .toList(),
     imageLink: json['imageLink'] as String?,
-  );
+  )..pendingAppointments = (json['pendingAppointments'] as List<dynamic>?)
+      ?.map((e) => ProfessionalAppointment.fromJson(e as Map<String, dynamic>))
+      .toList();
 }
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
@@ -33,8 +36,8 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'expertise': instance.expertise,
       'phone': instance.phone,
       'imageLink': instance.imageLink,
-      'appointments':
-          instance.appointments?.map((e) => e.toIso8601String()).toList(),
+      'appointments': instance.appointments,
+      'pendingAppointments': instance.pendingAppointments,
     };
 
 K _$enumDecode<K, V>(
@@ -80,3 +83,20 @@ const _$RoleEnumMap = {
   Role.Meal_Planner: 'meal-planner',
   Role.Physiotherapist: 'physiotherapist',
 };
+
+ProfessionalAppointment _$ProfessionalAppointmentFromJson(
+    Map<String, dynamic> json) {
+  return ProfessionalAppointment(
+    name: json['name'] as String?,
+    time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
+    userEmail: json['userEmail'] as String?,
+  );
+}
+
+Map<String, dynamic> _$ProfessionalAppointmentToJson(
+        ProfessionalAppointment instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'time': instance.time?.toIso8601String(),
+      'userEmail': instance.userEmail,
+    };

@@ -37,13 +37,13 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(accepted_appts.isEmpty?"No upcoming Appointments":earliestAppt(accepted_appts),
+          Text(accepted_appts.isEmpty?"No upcoming Appointments":"Upcoming Appointments",
             style: TextStyle(color: Colors.white, fontSize: 25),
           ),
           Padding(
             padding: EdgeInsets.all(20),
             child: Text(
-              "No upcoming Appointments",
+              accepted_appts.isEmpty?"No upcoming Appointments":earliestAppt(accepted_appts),
               style: TextStyle(color: Colors.white),
             ),
           ),

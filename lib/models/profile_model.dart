@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
+//import 'package:json_serializable/builder.dart';
 
 part 'profile_model.g.dart';
 
@@ -14,7 +15,8 @@ class Profile {
   String? expertise;
   String? phone;
   String? imageLink;
-  List<DateTime>? appointments;
+  List<ProfessionalAppointment>? appointments;
+  List<ProfessionalAppointment>? pendingAppointments;
 
   Profile(
       {this.id,
@@ -28,12 +30,9 @@ class Profile {
       this.appointments,
       this.imageLink});
 
-  factory Profile.fromJson(Map<String, dynamic> json) {
-    json["appointments"] = (json["appointments"])
-        .map<String>((e) => e.toDate().toString())
-        .toList();
-    return _$ProfileFromJson(json);
-  }
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
+
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }
 
@@ -60,4 +59,24 @@ class TimeStampConverter implements JsonConverter<DateTime, Timestamp> {
   Timestamp toJson(DateTime date) {
     return Timestamp.fromDate(date);
   }
+}
+
+@JsonSerializable()
+class ProfessionalAppointment {
+  ProfessionalAppointment({
+    this.name,
+    this.time,
+    this.userEmail,
+  });
+
+  String? name;
+  DateTime? time;
+  String? userEmail;
+
+  factory ProfessionalAppointment.fromJson(Map<String, dynamic> json) {
+    json["time"] = json["time"].toDate().toString();
+    return _$ProfessionalAppointmentFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$ProfessionalAppointmentToJson(this);
 }

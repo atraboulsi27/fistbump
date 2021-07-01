@@ -82,9 +82,35 @@ class ProfileRepository {
     });
   }
 
+
+
+  // get professional profile takes the information for filling the profile of a professional
+  // while get professional gets the information to fill id, pending_appts,accepted_appts,
+  // user name, user email (which also get filled when we call get Profile for normal users
+
   getProfile(String email) async {
     return _firestore
         .collection('users')
+        .where("email", isEqualTo: email)
+        .get();
+  }
+
+  getProfessionalProfile(String email) async {
+    var a = await _firestore
+        .collection('profiles')
+        .where("email", isEqualTo: email)
+        .get()
+        .then((v) {
+      Profile profile = Profile.fromJson(v.docs.first.data());
+      profile.id = v.docs.first.id;
+      return profile;
+    });
+    return a;
+  }
+
+  getProfessional(String email) {
+    return _firestore
+        .collection('profiles')
         .where("email", isEqualTo: email)
         .get();
   }
@@ -97,7 +123,7 @@ class ProfileRepository {
 
   void addPending(String id, List appointment) {
     try {
-      Map appt_u() {
+      Map appt() {
         return {
           "name": appointment[0],
           "time": appointment[1],
@@ -105,16 +131,9 @@ class ProfileRepository {
           "Professional": appointment[3]
         };
       }
-      Map appt_p() {
-        return {
-          "name": appointment[0],
-          "time": appointment[1],
-          "user_email": appointment[2],
-        };
-      }
 
       _firestore.collection('profiles').doc(id).update({
-        "pending_appointments": FieldValue.arrayUnion([appt_p()])
+        "pending_appointments": FieldValue.arrayUnion([appt()])
       });
       _firestore
           .collection('users')
@@ -123,7 +142,7 @@ class ProfileRepository {
           .then((querySnapshot) {
         querySnapshot.docs.forEach((documentSnapshot) {
           documentSnapshot.reference.update({
-            "pending_appointments": FieldValue.arrayUnion([appt_u()])
+            "pending_appointments": FieldValue.arrayUnion([appt()])
           });
         });
       });
@@ -134,7 +153,7 @@ class ProfileRepository {
 
   void acceptPending(String id, List appointment) {
     try {
-      Map appt_u() {
+      Map appt() {
         return {
           "name": appointment[0],
           "time": appointment[1],
@@ -142,21 +161,14 @@ class ProfileRepository {
           "Professional": appointment[3]
         };
       }
-      Map appt_p() {
-        return {
-          "name": appointment[0],
-          "time": appointment[1],
-          "user_email": appointment[2],
-        };
-      }
 
       // profiles collection: remove from pending and add to accepted appointments
       _firestore.collection('profiles').doc(id).update({
-        "pending_appointments": FieldValue.arrayRemove([appt_p()])
+        "pending_appointments": FieldValue.arrayRemove([appt()])
       });
 
       _firestore.collection('profiles').doc(id).update({
-        "appointments": FieldValue.arrayUnion([appt_p()])
+        "appointments": FieldValue.arrayUnion([appt()])
       });
       // users collection: remove from pending and add to accepted appointments
       _firestore
@@ -166,7 +178,7 @@ class ProfileRepository {
           .then((querySnapshot) {
         querySnapshot.docs.forEach((documentSnapshot) {
           documentSnapshot.reference.update({
-            "pending_appointments": FieldValue.arrayRemove([appt_u()])
+            "pending_appointments": FieldValue.arrayRemove([appt()])
           });
         });
       });
@@ -178,7 +190,38 @@ class ProfileRepository {
           .then((querySnapshot) {
         querySnapshot.docs.forEach((documentSnapshot) {
           documentSnapshot.reference.update({
-            "appointments": FieldValue.arrayUnion([appt_u()])
+            "appointments": FieldValue.arrayUnion([appt()])
+          });
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void rejectPending(String id, List appointment) {
+    try {
+      Map appt() {
+        return {
+          "name": appointment[0],
+          "time": appointment[1],
+          "user_email": appointment[2],
+          "Professional": appointment[3]
+        };
+      }
+
+      _firestore.collection('profiles').doc(id).update({
+        "pending_appointments": FieldValue.arrayRemove([appt()])
+      });
+
+      _firestore
+          .collection('users')
+          .where('email', isEqualTo: appointment[2])
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((documentSnapshot) {
+          documentSnapshot.reference.update({
+            "pending_appointments": FieldValue.arrayRemove([appt()])
           });
         });
       });
@@ -191,16 +234,6 @@ class ProfileRepository {
 class Authentication {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-//  currentUser() async {
-//    try {
-//      await Future.delayed(Duration(milliseconds: 500));
-//      User user = auth.currentUser;
-//      String email = user.email;
-//      return email;
-//    } catch (e) {
-//      return "";
-//    }
-//  }
 
   dynamic register(email, pass) async {
     try {
@@ -239,19 +272,21 @@ class Authentication {
   }
 }
 
+String doc_id = "";
 String user_name = "";
 String user_email = "";
 List pending_appts = [];
 List accepted_appts = [];
 
 String earliestAppt(List t) {
-
   var earliest = t[0]["time"].toDate();
+  String name = t[0]["Professional"];
   for (int i = 1; i < t.length; i++) {
-    if(t[i]["time"].toDate().isBefore(earliest))
-      {
-        earliest = t[i]["time"].toDate();
-      }
+    if (t[i]["time"].toDate().isBefore(earliest)) {
+      earliest = t[i]["time"].toDate();
+      name = t[i]["Professional"];
+    }
   }
-  return earliest.toString();
+  String Appt = name + "\n\n" + earliest.toString();
+  return Appt;
 }

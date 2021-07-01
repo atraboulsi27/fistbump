@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fistbump/repository/profile_repository.dart';
 
 class pendingAppointments extends StatefulWidget {
   _pendingAppointments createState() => _pendingAppointments();
 }
 
-class Appointment {
-  String date;
-  String time;
-  String user;
-
-  Appointment(this.date, this.time, this.user);
-}
-
 class _pendingAppointments extends State<pendingAppointments> {
-  @override
-  List<Appointment> appointments = [
-    Appointment("July 1", "11 AM", "Ahmad Traboulsi"),
-    Appointment("July 1", "11:30 AM", "Hadi Hassan")
-  ];
+  final ProfileRepository repo = ProfileRepository();
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -26,7 +16,7 @@ class _pendingAppointments extends State<pendingAppointments> {
         child: SingleChildScrollView(
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: appointments.length,
+            itemCount: pending_appts.length,
             itemBuilder: (context, int index) {
               return Container(
                 height: 150.0,
@@ -42,24 +32,26 @@ class _pendingAppointments extends State<pendingAppointments> {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(13, 10, 0, 0),
                               child: Text(
-                                appointments[index].user,
+                                pending_appts[index]["name"],
                                 style: TextStyle(color: Colors.deepOrange),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(13, 10, 0, 0),
                               child: Text(
-                                appointments[index].date,
+                                pending_appts[index]["time"]
+                                    .toDate()
+                                    .toString(),
                                 style: TextStyle(color: Colors.deepOrange),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(13, 10, 0, 0),
-                              child: Text(
-                                appointments[index].time,
-                                style: TextStyle(color: Colors.deepOrange),
-                              ),
-                            ),
+//                            Padding(
+//                              padding: const EdgeInsets.fromLTRB(13, 10, 0, 0),
+//                              child: Text(
+//                                pending_appts[index]["user_email"],
+//                                style: TextStyle(color: Colors.deepOrange),
+//                              ),
+//                            ),
                           ],
                         ),
                       ),
@@ -74,7 +66,18 @@ class _pendingAppointments extends State<pendingAppointments> {
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
                                       Colors.orange.shade50)),
-                              onPressed: () => print(""),
+                              onPressed: () {
+                                List appointment = [
+                                  pending_appts[index]["name"],
+                                  pending_appts[index]["time"],
+                                  pending_appts[index]["user_email"],
+                                  pending_appts[index]["Professional"]
+                                ];
+                                repo.acceptPending(doc_id, appointment);
+                                setState(() {
+                                  pending_appts.removeAt(index);
+                                });
+                              },
                             ),
                             Container(
                               width: 20,
@@ -86,7 +89,18 @@ class _pendingAppointments extends State<pendingAppointments> {
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
                                       Colors.orange.shade50)),
-                              onPressed: () => print(""),
+                              onPressed: () {
+                                List appointment = [
+                                  pending_appts[index]["name"],
+                                  pending_appts[index]["time"],
+                                  pending_appts[index]["user_email"],
+                                  pending_appts[index]["Professional"]
+                                ];
+                                repo.rejectPending(doc_id, appointment);
+                                setState(() {
+                                  pending_appts.removeAt(index);
+                                });
+                              },
                             ),
                           ],
                         ),

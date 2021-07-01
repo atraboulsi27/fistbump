@@ -49,6 +49,9 @@ class _LoginPageState extends State<LoginPage> {
     return InkWell(
       onTap: () async {
         auth.signIn(emailController.text.trim(), passController.text.trim());
+
+        // if the user is not professional fill everything except an id field
+        // else fill everything
         var profile = await repo.getProfile(emailController.text.trim());
         if (profile.docs[0]["professional"] == false) {
           user_name = profile.docs[0]["name"];
@@ -60,6 +63,14 @@ class _LoginPageState extends State<LoginPage> {
               .push(MaterialPageRoute(builder: (context) => Home()));
         }
         if (profile.docs[0]["professional"] == true) {
+          profile = await repo.getProfessional(emailController.text.trim());
+          user_email = emailController.text.trim();
+          user_name = profile.docs[0]["name"];
+          user_email = profile.docs[0]["email"];
+          pending_appts = profile.docs[0]["pending_appointments"];
+          accepted_appts = profile.docs[0]["appointments"];
+          doc_id = profile.docs[0].id;
+
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => ProfessionalPage()));
         }

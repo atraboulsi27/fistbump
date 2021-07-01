@@ -45,7 +45,7 @@ class _ProfessionalPage extends State<ProfessionalPage> {
   void initState() {
     super.initState();
     appBarController = TextEditingController();
-    pageMap = {0: pendingAppointments(), 1: Calendar(), 2: Profile()};
+    pageMap = {0: pendingAppointments(), 1: Calendar(), 2: ProfProfile()};
     setAppBar();
   }
 
