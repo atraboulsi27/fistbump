@@ -56,6 +56,9 @@ class _LoginPageState extends State<LoginPage> {
         if (profile.docs[0]["professional"] == false) {
           user_name = profile.docs[0]["name"];
           user_email = profile.docs[0]["email"];
+          user_age = profile.docs[0]["Age"];
+          user_sex = profile.docs[0]["Sex"];
+          user_photo = profile.docs[0]["Photo URL"];
           pending_appts = profile.docs[0]["pending_appointments"];
           accepted_appts = profile.docs[0]["appointments"];
           print(pending_appts);

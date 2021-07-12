@@ -18,9 +18,9 @@ class _ProfProfile extends State<ProfProfile> {
     profile =  await repo.getProfessionalProfile(user_email);
 
   }
-  void initState()  async{
+  void initState()  {
     super.initState();
-    await getData();
+    getData();
   }
   Widget build(BuildContext context) {
 

@@ -1,6 +1,7 @@
 import 'package:fistbump/screens/calendar_page.dart';
 import 'package:fistbump/screens/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:fistbump/screens/profile.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class _HomeState extends State<Home> {
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     CalendarPage(),
+    ProfilePage()
   ];
 
   void _onItemTapped(int index) {
@@ -55,6 +57,10 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.calendar_today_outlined),
             label: 'Appointments',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
@@ -63,3 +69,4 @@ class _HomeState extends State<Home> {
     );
   }
 }
+

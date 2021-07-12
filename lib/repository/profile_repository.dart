@@ -82,8 +82,6 @@ class ProfileRepository {
     });
   }
 
-
-
   // get professional profile takes the information for filling the profile of a professional
   // while get professional gets the information to fill id, pending_appts,accepted_appts,
   // user name, user email (which also get filled when we call get Profile for normal users
@@ -116,11 +114,50 @@ class ProfileRepository {
   }
 
   Future<void> insertUser(String email, String user) {
-    return _firestore
-        .collection('users')
-        .add({'email': email, 'professional': false, 'name': user});
+    return _firestore.collection('users').add({
+      'pending_appointments': [],
+      'appointments': [],
+      'email': email,
+      'professional': false,
+      'name': user,
+      'Photo URL': ''
+    });
   }
 
+  Future<void> insertPhotoUrl(String email, String url) {
+    return _firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        documentSnapshot.reference.update({"Photo URL": url});
+      });
+    });
+  }
+
+  Future<void> insertUserProfile(String email, String sex, String age) {
+    return _firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        documentSnapshot.reference.update({"Sex": sex, "Age": age});
+      });
+    });
+  }
+  Future<void> updateUserProfile(String email, String sex, String age, String name) {
+    return _firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        documentSnapshot.reference.update({"Sex": sex, "Age": age, "name": name});
+      });
+    });
+  }
   void addPending(String id, List appointment) {
     try {
       Map appt() {
@@ -229,11 +266,12 @@ class ProfileRepository {
       print(e);
     }
   }
+
+
 }
 
 class Authentication {
   FirebaseAuth auth = FirebaseAuth.instance;
-
 
   dynamic register(email, pass) async {
     try {
@@ -275,6 +313,9 @@ class Authentication {
 String doc_id = "";
 String user_name = "";
 String user_email = "";
+String user_sex = "";
+String user_age = "";
+String user_photo = "https://i2.wp.com/airlinkflight.org/wp-content/uploads/2019/02/male-placeholder-image.jpeg?ssl=1";
 List pending_appts = [];
 List accepted_appts = [];
 

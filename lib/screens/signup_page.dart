@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 import 'package:fistbump/repository/profile_repository.dart';
-import 'home_page.dart';
+import 'complete_info.dart';
 
 
 class SignUpPage extends StatefulWidget {
@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
         user_name = nameController.text.trim();
         user_email = emailController.text.trim();
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomePage()));
+            .push(MaterialPageRoute(builder: (context) => completeInfo()));
       },
       child: Container(
         width: MediaQuery
@@ -133,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Name", nameController),
+        _entryField("Full Name", nameController),
         _entryField("Email id", emailController),
         _entryField("Password", passController, isPassword: true),
       ],

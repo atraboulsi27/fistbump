@@ -2,6 +2,7 @@ import 'package:fistbump/models/profile_model.dart';
 import 'package:fistbump/repository/profile_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:fistbump/email.dart';
 
 class BookAppointmentPage extends StatefulWidget {
   final Profile profile;
@@ -68,7 +69,10 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                     widget.profile.name!
                   ];
                   repository.addPending(widget.profile.id!, appointment);
+                  sendEmail(widget.profile.email!, user_name, widget.profile.name!,
+                  currentSelection.date!, true);
 //                  repository.acceptPending(widget.profile.id!, appointment);
+
                   Navigator.of(context).pop();
                 },
               )),

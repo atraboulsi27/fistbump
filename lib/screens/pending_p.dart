@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fistbump/repository/profile_repository.dart';
+import 'package:fistbump/email.dart';
 
 class pendingAppointments extends StatefulWidget {
   _pendingAppointments createState() => _pendingAppointments();
@@ -74,9 +75,17 @@ class _pendingAppointments extends State<pendingAppointments> {
                                   pending_appts[index]["Professional"]
                                 ];
                                 repo.acceptPending(doc_id, appointment);
+                                sendEmail(
+                                    pending_appts[index]["user_email"],
+                                    user_name,
+                                    pending_appts[index]["name"],
+                                    pending_appts[index]["time"].toDate(),
+                                    false,
+                                    true);
                                 setState(() {
                                   pending_appts.removeAt(index);
                                 });
+
                               },
                             ),
                             Container(
@@ -97,9 +106,17 @@ class _pendingAppointments extends State<pendingAppointments> {
                                   pending_appts[index]["Professional"]
                                 ];
                                 repo.rejectPending(doc_id, appointment);
+                                sendEmail(
+                                    pending_appts[index]["user_email"],
+                                    user_name,
+                                    pending_appts[index]["name"],
+                                    pending_appts[index]["time"],
+                                    false,
+                                    false);
                                 setState(() {
                                   pending_appts.removeAt(index);
                                 });
+
                               },
                             ),
                           ],
