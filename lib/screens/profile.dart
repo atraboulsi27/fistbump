@@ -1,10 +1,11 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fistbump/repository/profile_repository.dart';
 import 'edit_userprofile.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+
 
 class ProfilePage extends StatefulWidget {
   _ProfilePage createState() => _ProfilePage();

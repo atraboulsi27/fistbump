@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fistbump/models/profile_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/src/widgets/editable_text.dart';
 
 class ProfileRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -136,6 +137,18 @@ class ProfileRepository {
     });
   }
 
+  Future<void> insertProfessionalPhotoUrl(String email, String url) {
+    return _firestore
+        .collection('profiles')
+        .where('email', isEqualTo: email)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        documentSnapshot.reference.update({"imageLink": url});
+      });
+    });
+  }
+
   Future<void> insertUserProfile(String email, String sex, String age) {
     return _firestore
         .collection('users')
@@ -147,17 +160,45 @@ class ProfileRepository {
       });
     });
   }
-  Future<void> updateUserProfile(String email, String sex, String age, String name) {
+
+  Future<void> updateUserProfile(
+      String email, String sex, String age, String name) {
     return _firestore
         .collection('users')
         .where('email', isEqualTo: email)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((documentSnapshot) {
-        documentSnapshot.reference.update({"Sex": sex, "Age": age, "name": name});
+        documentSnapshot.reference
+            .update({"Sex": sex, "Age": age, "name": name});
       });
     });
   }
+
+  Future<void> updateProfessionalProfile(
+      String email,
+      String name,
+      String expertise,
+      String description,
+      String location,
+      String phone) {
+    return _firestore
+        .collection('profiles')
+        .where('email', isEqualTo: email)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        documentSnapshot.reference.update({
+          "description": description,
+          "location": location,
+          "phone": phone,
+          "name": name,
+          "expertise": expertise
+        });
+      });
+    });
+  }
+
   void addPending(String id, List appointment) {
     try {
       Map appt() {
@@ -266,8 +307,6 @@ class ProfileRepository {
       print(e);
     }
   }
-
-
 }
 
 class Authentication {
@@ -292,6 +331,7 @@ class Authentication {
     try {
       UserCredential user =
           await auth.signInWithEmailAndPassword(email: email, password: pass);
+      return true;
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "wrong-password":
@@ -315,7 +355,8 @@ String user_name = "";
 String user_email = "";
 String user_sex = "";
 String user_age = "";
-String user_photo = "https://i2.wp.com/airlinkflight.org/wp-content/uploads/2019/02/male-placeholder-image.jpeg?ssl=1";
+String user_photo =
+    "https://i2.wp.com/airlinkflight.org/wp-content/uploads/2019/02/male-placeholder-image.jpeg?ssl=1";
 List pending_appts = [];
 List accepted_appts = [];
 
