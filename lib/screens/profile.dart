@@ -6,6 +6,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
+import 'login_page.dart';
+
 
 class ProfilePage extends StatefulWidget {
   _ProfilePage createState() => _ProfilePage();
@@ -71,6 +73,37 @@ class _ProfilePage extends State<ProfilePage> {
                 colors: [Colors.deepOrangeAccent.shade200, Colors.deepOrange])),
         child: Text(
           'Edit',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _logoutButton() {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => LoginPage()));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width / 2,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+//            BoxShadow(
+//                color: Colors.grey.shade200,
+//                offset: Offset(2, 4),
+//                blurRadius: 5,
+//                spreadRadius: 2)
+            ],
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Colors.deepOrangeAccent.shade200, Colors.deepOrange])),
+        child: Text(
+          'Log out',
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),
@@ -145,6 +178,13 @@ class _ProfilePage extends State<ProfilePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [_editButton()],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [_logoutButton()],
             ),
           ],
         ),

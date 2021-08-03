@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'edit_professionalprofile.dart';
+import 'login_page.dart';
 
 var profile = Profile();
 
@@ -91,6 +92,36 @@ class _ProfProfile extends State<ProfProfile> {
   void initState() {
     super.initState();
     getData();
+  }
+  Widget _logoutButton() {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => LoginPage()));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width / 2,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+//            BoxShadow(
+//                color: Colors.grey.shade200,
+//                offset: Offset(2, 4),
+//                blurRadius: 5,
+//                spreadRadius: 2)
+            ],
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Colors.deepOrangeAccent.shade200, Colors.deepOrange])),
+        child: Text(
+          'Log out',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ),
+    );
   }
 
   Widget build(BuildContext context) {
@@ -224,7 +255,13 @@ class _ProfProfile extends State<ProfProfile> {
                       Text("View All"),
                     ],
                   ),
-                _editButton()],
+                  _editButton(),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [_logoutButton()],
+                  ),
+                ],
               ))
           : Container(),
     );
